@@ -1,26 +1,32 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using BaseClass;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Zenject;
 
 namespace Map
 {
-    public class TilesGenerator : MonoBehaviour
+    public class TilesGenerator : JobBehaviour
     {
         [SerializeField] private GameObject tilePrefab;
 
-        // Start is called before the first frame update
-        void Start()
+        [Inject] public MapModel MapModel;
+
+        protected override IEnumerator StartJob()
         {
+            MapModel.IsTilesGenerated = false;
             var tileSize = CalculateTileSize();
             var cameraSize = CalculateCameraSize();
             var tilesCountInHalfHorizontal = (int)(cameraSize.X * 0.5f / tileSize.X);
             var tileCountInHalfVertical = (int)(cameraSize.Y * 0.5f / tileSize.Y);
-            GenerateMap(tilesCountInHalfHorizontal, tileCountInHalfVertical, tileSize);
+            GenerateTiles(tilesCountInHalfHorizontal, tileCountInHalfVertical, tileSize);
+            MapModel.IsTilesGenerated = true;
+            yield return null;
         }
 
-        private void GenerateMap(int tilesCountInHalfHorizontal, int tileCountInHalfVertical,
+        private void GenerateTiles(int tilesCountInHalfHorizontal, int tileCountInHalfVertical,
             (float X, float Y) tilesize)
         {
             for (int i = -tilesCountInHalfHorizontal; i < tilesCountInHalfHorizontal + 1; i++)

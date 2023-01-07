@@ -28,7 +28,7 @@ namespace Map
         private void AssignCameraAndConfigurePosition()
         {
             _camera = UnityEngine.Camera.main;
-            _camera.transform.position = new Vector3(0, 0, 0);
+            _camera.transform.position = new Vector3(0, 0, -10f);
         }
 
         private void GenerateTiles(int tilesCountInHalfHorizontal, int tileCountInHalfVertical,

@@ -2,8 +2,12 @@
 
 namespace Design.Screens.Map
 {
-    public class DesignMapScreen : MonoBehaviour
+    public class DesignMapScreen : DesignScreen
     {
-        
+        private bool isToolTipOpen = false;
+        public override void OnScreenClick()
+        {
+            
+        }
     }
 }

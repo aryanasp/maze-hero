@@ -16,5 +16,6 @@ namespace Map
         
         public bool HasBlock;
         public BlockType BlockType;
+        public GameObject BlockTypeGameObject;
     }
 }

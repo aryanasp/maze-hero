@@ -5,6 +5,12 @@ using Zenject;
 
 namespace Design
 {
+    public enum DesignModeCommands
+    {
+        Select = 0,
+        Edit = 1,
+        Delete = 2
+    }
     public class DesignEnvironment : MonoBehaviour
     {
         [SerializeField] private List<DesignScreen> screens;

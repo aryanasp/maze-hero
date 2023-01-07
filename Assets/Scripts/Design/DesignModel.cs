@@ -12,7 +12,7 @@ namespace Design
     
     public class DesignModel
     {
-        public bool IsDesignMode;
+        public bool IsDesignMode = true;
         public DesignScreens CurrentScreen;
 
         public Action<bool> Subscribers = (bool state) => {};

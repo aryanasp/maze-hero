@@ -33,14 +33,15 @@ namespace Map
                 var blockType = mapObject.blockType;
                 var blockPrefab = _prefabs[blockType];
                 var block = Instantiate(blockPrefab, tileModel.Transform);
-                ConfigureMapItemModel(tileModel, blockType);
+                ConfigureMapItemModel(tileModel, blockType, block);
             }
         }
 
-        private static void ConfigureMapItemModel(TileModel tileModel, BlockType blockType)
+        private static void ConfigureMapItemModel(TileModel tileModel, BlockType blockType, GameObject block)
         {
             tileModel.HasBlock = true;
             tileModel.BlockType = blockType;
+            tileModel.BlockTypeGameObject = block;
         }
 
         private void LoadBlockTypePrefabs()

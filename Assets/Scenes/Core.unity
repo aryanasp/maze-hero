@@ -358,6 +358,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1428163164}
   - component: {fileID: 1428163165}
+  - component: {fileID: 1428163166}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -392,6 +393,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 762793434886220208, guid: 569384ae85b37034f97afcbf7e5d6aff, type: 3}
+--- !u!114 &1428163166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1428163163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5381a012b7504506b9927305782d82eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mazeConfig: {fileID: 11400000, guid: b51bf70134fde844eb93bb3de6aae1e1, type: 2}
 --- !u!1 &1892963759
 GameObject:
   m_ObjectHideFlags: 0

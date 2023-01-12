@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Design
 {
-    public enum DesignModeCommands
+    public enum DesignTileCommands
     {
         Select = 0,
         Edit = 1,

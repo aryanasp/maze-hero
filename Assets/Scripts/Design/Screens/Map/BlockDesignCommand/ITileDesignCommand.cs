@@ -2,9 +2,9 @@
 
 namespace Design.Screens.Map
 {
-    public interface IMapDesignModeCommand
+    public interface ITileDesignCommand
     {
-        DesignModeCommands GetCommand();
+        DesignTileCommands GetCommand();
         void DoAction(TileModel currentTileModel, BlockType selectedBlockType);
     }
 }

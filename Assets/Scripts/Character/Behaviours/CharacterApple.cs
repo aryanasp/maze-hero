@@ -11,7 +11,7 @@ namespace Character
 
         private void Update()
         {
-            Logger.Log($"[CharacterApple]: Score {_scoreModel.Score}", true);
+            Logger.Log($"[CharacterApple]: Score {_scoreModel.Score}");
         }
 
         private void OnTriggerEnter2D(Collider2D col)

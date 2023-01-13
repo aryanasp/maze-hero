@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using Zenject;
 using Logger = Log.Logger;
 
@@ -15,7 +12,6 @@ namespace Character
 
         private void Update()
         {
-            
             Logger.Log($"[MoveLogic]: {_moveModel.IsMoving}");
             Logger.Log($"[MoveLogic]: {_moveModel.CurrentMoveSpeed}");
             var axisDirection = "Horizontal";

@@ -5,7 +5,7 @@ using Logger = Log.Logger;
 
 namespace Character
 {
-    public class MoveLogic : MonoBehaviour
+    public class MoveInputLogic : MonoBehaviour
     {
         [Inject] private MoveConfig _moveConfig;
         [Inject] private MoveModel _moveModel;

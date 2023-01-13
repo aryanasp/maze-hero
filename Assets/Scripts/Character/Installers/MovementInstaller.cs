@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Zenject;
 
-namespace Character.Installers
+namespace Character
 {
     public class MovementInstaller : MonoInstaller<MovementInstaller>
     {

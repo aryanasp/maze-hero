@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Character
 {
-    public class ScoreModel
+    public class ScoreModel : IComparable<ScoreModel>
     {
         private int _score;
 
@@ -21,6 +22,13 @@ namespace Character
                 _score = value;
                 OnScoreChange.Invoke();
             }
+        }
+
+        public int CompareTo(ScoreModel other)
+        {
+            if (ReferenceEquals(this, other)) return 0;
+            if (ReferenceEquals(null, other)) return 1;
+            return _score.CompareTo(other._score);
         }
     }
 }

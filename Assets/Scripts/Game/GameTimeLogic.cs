@@ -12,6 +12,10 @@ namespace Game
         
         private void FixedUpdate()
         {
+            if (CheckGameIsPaused())
+            {
+                return;
+            }
             if (CheckIfGameFinished())
             {
                 return;
@@ -21,6 +25,11 @@ namespace Game
                 UpdateRound();
             }
             UpdateRoundTimePassed();
+        }
+
+        private bool CheckGameIsPaused()
+        {
+            return _gameModel.IsPausing;
         }
 
         private void UpdateRound()

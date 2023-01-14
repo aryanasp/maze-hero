@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using BaseClass;
 using UnityEngine;
@@ -7,21 +8,31 @@ using Zenject;
 
 namespace Map
 {
-    public class MazeGenerator : JobBehaviour
+    public class MazeGenerator : MonoBehaviour
     {
         [SerializeField] private MazeConfig mazeConfig;
         [Inject] public MapModel MapModel;
 
         private Dictionary<BlockType, GameObject> _prefabs;
 
-        protected override IEnumerator StartJob()
+        public void Awake()
         {
+            MapModel.OnTilesGenerated += GenerateMaze;
+        }
+
+        private void OnDestroy()
+        {
+            MapModel.OnTilesGenerated -= GenerateMaze;
+        }
+
+        private void GenerateMaze()
+        {
+            if (!MapModel.IsTilesGenerated) return;
             MapModel.IsMazeGenerated = false;
-            yield return new WaitUntil(() => MapModel.IsTilesGenerated);
             _prefabs = new Dictionary<BlockType, GameObject>();
             LoadBlockTypePrefabs();
             GenerateBlocks();
-            yield return new WaitForEndOfFrame();
+            _prefabs.Clear();
             MapModel.IsMazeGenerated = true;
         }
 

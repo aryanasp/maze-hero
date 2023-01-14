@@ -1,18 +1,22 @@
+using System;
 using System.Collections;
 using BaseClass;
+using Game;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace Map
 {
-    public class TilesGenerator : JobBehaviour
+    public class TilesGenerator : MonoBehaviour
     {
         [SerializeField] private GameObject tilePrefab;
 
         [Inject] public MapModel MapModel;
+        [Inject] private GameModel _gameModel;
         private UnityEngine.Camera _camera;
         
-        protected override IEnumerator StartJob()
+        void Start()
         {
             AssignCameraAndConfigurePosition();
             MapModel.IsTilesGenerated = false;
@@ -21,9 +25,22 @@ namespace Map
             var tilesCountInHalfHorizontal = (int)(cameraSize.X * 0.5f / tileSize.X);
             var tileCountInHalfVertical = (int)(cameraSize.Y * 0.5f / tileSize.Y);
             GenerateTiles(tilesCountInHalfHorizontal, tileCountInHalfVertical, tileSize);
-            yield return new WaitForEndOfFrame();
+            MapModel.IsTilesGenerated = true;
+            _gameModel.OnGamePausedChanged += ToggleGenerateMaze;
+        }
+
+        private void OnDestroy()
+        {
+            _gameModel.OnGamePausedChanged -= ToggleGenerateMaze;
+        }
+
+        private void ToggleGenerateMaze()
+        {
+            MapModel.IsTilesGenerated = false;
+            MapModel.Reset();
             MapModel.IsTilesGenerated = true;
         }
+
 
         private void AssignCameraAndConfigurePosition()
         {

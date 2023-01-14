@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using Character;
+using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace Game
 {

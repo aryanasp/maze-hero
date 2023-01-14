@@ -5,11 +5,11 @@ namespace Game
 {
     public class GameModel
     {
-        private bool _isStarted;
+        private bool _isPausing = true;
         private int _currentRound;
         private int _currentRoundTimePassed;
 
-        public Action OnGameStarted = () => { };
+        public Action OnGamePausedChanged = () => { };
         public Action OnRoundChanged = () => { };
         public Action OnRoundTimePassedUpdate = () => { };
 
@@ -30,17 +30,17 @@ namespace Game
             set => _currentRoundTimePassed = value;
         }
 
-        public bool IsStarted
+        public bool IsPausing
         {
-            get => _isStarted;
+            get => _isPausing;
             set
             {
-                if (_isStarted == value)
+                if (_isPausing == value)
                 {
                     return;
                 }
-                _isStarted = value;
-                OnGameStarted.Invoke();
+                _isPausing = value;
+                OnGamePausedChanged.Invoke();
             }
         }
     }

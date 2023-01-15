@@ -8,10 +8,14 @@ namespace Game
         [Inject] private GameConfig _gameConfig;
         [Inject] private GameModel _gameModel;
 
-        private float _timePassedFromLastGameTimeUpdate;
+        private float _timePassedFromLastGameEpochUpdate;
         
         private void FixedUpdate()
         {
+            if (CheckIfNeedEndSession())
+            {
+                EndSession();
+            }
             if (CheckGameIsPaused())
             {
                 return;
@@ -27,6 +31,16 @@ namespace Game
             UpdateRoundTimePassed();
         }
 
+        private void EndSession()
+        {
+            Application.Quit();
+        }
+
+        private bool CheckIfNeedEndSession()
+        {
+            return _gameModel.CurrentRound > _gameConfig.roundCount;
+        }
+
         private bool CheckGameIsPaused()
         {
             return _gameModel.IsPausing;
@@ -34,14 +48,14 @@ namespace Game
 
         private void UpdateRound()
         {
-            _timePassedFromLastGameTimeUpdate = 0f;
-            _gameModel.CurrentRoundTimePassed = 0;
+            _timePassedFromLastGameEpochUpdate = 0f;
+            _gameModel.CurrentRoundEpochPassed = 0;
             _gameModel.CurrentRound += 1;
         }
 
         private bool ShouldNewRoundStart()
         {
-            return _gameModel.CurrentRoundTimePassed >= _gameConfig.roundDuration;
+            return _gameModel.CurrentRoundEpochPassed >= _gameConfig.roundDuration;
         }
 
         private bool CheckIfGameFinished()
@@ -51,10 +65,10 @@ namespace Game
 
         private void UpdateRoundTimePassed()
         {
-            _timePassedFromLastGameTimeUpdate += Time.fixedDeltaTime;
-            if (_timePassedFromLastGameTimeUpdate < 1f) return;
-            _gameModel.CurrentRoundTimePassed += 1;
-            _timePassedFromLastGameTimeUpdate = 0f;
+            _timePassedFromLastGameEpochUpdate += Time.fixedDeltaTime;
+            if (_timePassedFromLastGameEpochUpdate < _gameConfig.updateEpochTime) return;
+            _gameModel.CurrentRoundEpochPassed += 1;
+            _timePassedFromLastGameEpochUpdate = 0f;
         }
     }
 }

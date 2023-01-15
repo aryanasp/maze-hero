@@ -18,7 +18,13 @@ namespace Character
         {
             if (col.gameObject.CompareTag("Apple"))
             {
+                var com = col.gameObject.GetComponent<EatableByCharacter>();
+                if (com.IsConsumed())
+                {
+                    return;
+                }
                 _scoreModel.Score += 1;
+                com.Consume();
             }
         }
     }

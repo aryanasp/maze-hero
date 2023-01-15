@@ -6,12 +6,20 @@ using UnityEngine;
 public class EatableByCharacter : MonoBehaviour
 {
     [SerializeField] private GameObject obstacle;
-    
-    private void OnTriggerEnter2D(Collider2D col)
+    [SerializeField] private Collider2D colid;
+    private bool _isConsumed = false;
+
+    public void Consume()
     {
-        if (col.gameObject.layer == LayerMask.NameToLayer("Character"))
-        {
-            Destroy(obstacle);
-        }
+        colid.enabled = false;
+        var temp = gameObject;
+        temp.SetActive(false);
+        Destroy(temp);
+        _isConsumed = true;
+    }
+
+    public bool IsConsumed()
+    {
+        return _isConsumed;
     }
 }

@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0b609c2324a4fc48af2a2af9dc9ed90, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  roundDuration: 30
-  roundCount: 30
+  updateEpochTime: 0.2
+  roundDuration: 600
+  roundCount: 60

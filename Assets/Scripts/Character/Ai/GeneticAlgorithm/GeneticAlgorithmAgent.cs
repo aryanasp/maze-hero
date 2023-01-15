@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Game;
 using UnityEngine;
@@ -16,14 +15,16 @@ namespace Character.Ai.GeneticAlgorithm
         [Inject] private GameModel _gameModel;
         [Inject] private MoveModel _characterMoveModel;
         [Inject] private MoveConfig _moveConfig;
+
+        [SerializeField] private Transform rigidBodyTransform;
         
-        public List<MoveModel> Dna;
+        private List<MoveModel> _dna;
         public void Awake()
         {
-            Dna = new List<MoveModel>();
-            for (int i = 0; i < _gameConfig.roundDuration; i++)
+            _dna = new List<MoveModel>();
+            for (int i = 0; i < _gameConfig.roundDuration + 1; i++)
             {
-                Dna.Add(new MoveModel());
+                _dna.Add(new MoveModel());
             }
             _gameModel.OnRoundTimePassedUpdate += UpdateMoveModel;
         }
@@ -35,9 +36,9 @@ namespace Character.Ai.GeneticAlgorithm
 
         private void UpdateMoveModel()
         {
-            _characterMoveModel.CurrentMoveSpeed = Dna[_gameModel.CurrentRoundTimePassed].CurrentMoveSpeed;
-            _characterMoveModel.CurrentDirection = Dna[_gameModel.CurrentRoundTimePassed].CurrentDirection;
-            _characterMoveModel.IsMoving = Dna[_gameModel.CurrentRoundTimePassed].IsMoving;
+            _characterMoveModel.CurrentMoveSpeed = _dna[_gameModel.CurrentRoundEpochPassed].CurrentMoveSpeed;
+            _characterMoveModel.CurrentDirection = _dna[_gameModel.CurrentRoundEpochPassed].CurrentDirection;
+            _characterMoveModel.IsMoving = _dna[_gameModel.CurrentRoundEpochPassed].IsMoving;
         }
 
         public int GetScore()
@@ -47,12 +48,17 @@ namespace Character.Ai.GeneticAlgorithm
 
         public void FillRandom()
         {
-            foreach (var moveModel in Dna)
+            foreach (var gene in _dna)
             {
-                moveModel.CurrentDirection = (MoveDirection) UnityEngine.Random.Range(0, 4);
-                moveModel.CurrentMoveSpeed = UnityEngine.Random.Range(0f, 1f) * _moveConfig.moveSpeed;
-                moveModel.IsMoving = UnityEngine.Random.Range(0f, 1f) >= 0.5f;
+                FillGeneRandom(gene);
             }
+        }
+
+        private void FillGeneRandom(MoveModel gene)
+        {
+            gene.CurrentDirection = (MoveDirection)UnityEngine.Random.Range(0, 4);
+            gene.CurrentMoveSpeed = UnityEngine.Random.Range(0f, 1f) * _moveConfig.moveSpeed;
+            gene.IsMoving = UnityEngine.Random.Range(0f, 1f) >= 0.5f;
         }
 
         public void Combine(GeneticAlgorithmAgent agentParent1, GeneticAlgorithmAgent agentParent2)
@@ -60,11 +66,11 @@ namespace Character.Ai.GeneticAlgorithm
             var halfCount = _gameConfig.roundDuration / 2;
             for (int i = 0; i < halfCount; i++)
             {
-                Dna[i] = agentParent1.Dna[i];
+                _dna[i] = agentParent1._dna[i];
             }
             for (int i = halfCount; i < _gameConfig.roundDuration; i++)
             {
-                Dna[i] = agentParent2.Dna[i];
+                _dna[i] = agentParent2._dna[i];
             }
         }
 
@@ -73,6 +79,23 @@ namespace Character.Ai.GeneticAlgorithm
             if (ReferenceEquals(this, other)) return 0;
             if (ReferenceEquals(null, other)) return 1;
             return GetScore().CompareTo(other.GetScore());
+        }
+
+        public void ResetPos()
+        {
+            transform.localPosition = Vector3.zero;
+            rigidBodyTransform.localPosition = new Vector3(0.216f, 0.363f);
+        }
+
+        public void Mutate(float geneMutationChance)
+        {
+            foreach (var gene in _dna)
+            {
+                if (UnityEngine.Random.Range(0f, 1f) <= geneMutationChance)
+                {
+                    FillGeneRandom(gene);
+                }
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Character;
+using Game;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;
@@ -12,15 +13,17 @@ namespace Character
 {
     public class Move : MonoBehaviour
     {
-        [SerializeField] private Transform moveObject;
+        [Inject] private GameModel _gameModel;
         [Inject] private MoveModel _moveModel;
+        
+        [SerializeField] private Transform moveObject;
         private Dictionary<MoveDirection, Vector2> _moveDirectionVectors;
 
         private void Start()
         {
-
             InitMoveDirectionVectors();
         }
+        
 
         private void InitMoveDirectionVectors()
         {
@@ -32,20 +35,23 @@ namespace Character
                 [MoveDirection.Left] = Vector2.left
             };
         }
-
-
+        
         // Update is called once per frame
         void Update()
         {
             Logger.Log($"[Move]: {_moveModel.IsMoving}");
             Logger.Log($"[Move]: {_moveModel.CurrentMoveSpeed}");
+            if (_gameModel.IsPausing)
+            {
+                return;
+            }
             if (CheckIfCharacterShouldMove()) return;
             Transport();
         }
 
         private void Transport()
         {
-            var position = (Vector2)moveObject.transform.localPosition;
+            var position = (Vector2) moveObject.transform.localPosition;
             position += _moveModel.CurrentMoveSpeed * Time.fixedDeltaTime *
                         _moveDirectionVectors[_moveModel.CurrentDirection];
             moveObject.transform.localPosition = position;

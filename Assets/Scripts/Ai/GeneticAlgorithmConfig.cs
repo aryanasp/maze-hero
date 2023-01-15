@@ -7,5 +7,6 @@ namespace Ai
     {
         public int initialPopulation;
         public float mutationChance;
+        public float geneMutationChance;
     }
 }

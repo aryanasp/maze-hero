@@ -1,5 +1,4 @@
 using Ai;
-using Character;
 using Character.Factory;
 using Design;
 using Game;

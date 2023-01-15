@@ -123,3 +123,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacle: {fileID: 762793434886220208}
+  colid: {fileID: 8109572000732300310}

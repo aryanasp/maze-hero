@@ -7,7 +7,7 @@ namespace Game
     {
         private bool _isPausing = true;
         private int _currentRound;
-        private int _currentRoundTimePassed;
+        private int _currentRoundEpochPassed;
 
         public Action OnGamePausedChanged = () => { };
         public Action OnRoundChanged = () => { };
@@ -24,10 +24,19 @@ namespace Game
             }
         }
 
-        public int CurrentRoundTimePassed
+        public int CurrentRoundEpochPassed
         {
-            get => _currentRoundTimePassed;
-            set => _currentRoundTimePassed = value;
+            get => _currentRoundEpochPassed;
+            set
+            {
+                if (_currentRoundEpochPassed == value)
+                {
+                    return;
+                }
+
+                _currentRoundEpochPassed = value;
+                OnRoundTimePassedUpdate.Invoke();
+            }
         }
 
         public bool IsPausing

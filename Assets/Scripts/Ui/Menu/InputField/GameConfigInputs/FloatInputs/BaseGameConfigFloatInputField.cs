@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using TMPro;
 using UnityEngine;
 
 namespace Ui.Menu.InputField
@@ -8,7 +9,13 @@ namespace Ui.Menu.InputField
         [SerializeField] public float defaultValue;
         [SerializeField] public float maxRange;
         [SerializeField] public float minRange;
-
+        
+        protected void Start()
+        {
+            var textComp = (TextMeshProUGUI) inputField.placeholder;
+            textComp.text = $"Enter a number between ({minRange}, {maxRange})";
+        }
+        
         protected override string OnInputValidate(string inpString)
         {
             string validateString;

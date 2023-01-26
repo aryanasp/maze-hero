@@ -9,13 +9,13 @@ namespace Ui.Menu.InputField
         [SerializeField] public int defaultValue;
         [SerializeField] public int maxRange;
         [SerializeField] public int minRange;
-
+        
         protected void Start()
         {
-            var textComp = (TMP_Text) inputField.placeholder;
+            var textComp = (TextMeshProUGUI) inputField.placeholder;
             textComp.text = $"Enter a number between ({minRange}, {maxRange})";
         }
-
+        
         protected override string OnInputValidate(string inpString)
         {
             var validateString = inpString;

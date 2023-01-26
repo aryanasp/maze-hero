@@ -7,13 +7,20 @@ namespace Ui.Menu.InputField
 {
     public abstract class BaseInputField : MonoBehaviour
     {
+        [SerializeField] public TextMeshProUGUI description;
         [SerializeField] public TMP_InputField inputField;
-
+        
         protected virtual void OnEnable()
         {
-            inputField.onSubmit.AddListener(OnValueSubmit);
-            inputField.onValueChanged.AddListener(OnInputChange);
+            inputField.onSubmit.AddListener(OnInputChange);
         }
+
+        protected virtual void Start()
+        {
+            description.text = GetDescription();
+        }
+
+        protected abstract string GetDescription();
 
         private void OnInputChange(string inpString)
         {
@@ -30,12 +37,10 @@ namespace Ui.Menu.InputField
 
         protected abstract string OnInputValidate(string inpString);
         protected abstract void OnValueChange(string inpString);
-        protected abstract void OnValueSubmit(string inpString);
         
         protected virtual void OnDisable()
         {
-            inputField.onValueChanged.RemoveListener(OnInputChange);
-            inputField.onSubmit.RemoveListener(OnValueSubmit);
+            inputField.onSubmit.RemoveListener(OnInputChange);
         }
     }
 }

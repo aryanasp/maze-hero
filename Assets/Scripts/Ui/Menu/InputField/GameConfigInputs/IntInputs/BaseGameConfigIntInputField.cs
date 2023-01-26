@@ -7,13 +7,14 @@ namespace Ui.Menu.InputField
     public abstract class BaseGameConfigIntInputField : BaseGameConfigInputField
     {
         [SerializeField] public int defaultValue;
-        [SerializeField] public int maxRange;
         [SerializeField] public int minRange;
+        [SerializeField] public int maxRange;
         
-        protected void Start()
+        protected override void Start()
         {
             var textComp = (TextMeshProUGUI) inputField.placeholder;
             textComp.text = $"Enter a number between ({minRange}, {maxRange})";
+            base.Start();
         }
         
         protected override string OnInputValidate(string inpString)
@@ -48,9 +49,5 @@ namespace Ui.Menu.InputField
 
         protected abstract void AssignValue(int finalValue);
         
-        protected override void OnValueSubmit(string inpString)
-        {
-            AssignValue(int.Parse(inpString));
-        }
     }
 }

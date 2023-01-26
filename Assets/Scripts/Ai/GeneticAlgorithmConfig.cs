@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Ai
@@ -21,6 +22,8 @@ namespace Ai
         public InitialPopulationHeuristic initialHeuristic;
         [Space]
         [Header("Algorithm Details")]
+        [MinValue(0.02d)]
+        public float updateEpochTime;
         public GeneticAlgorithmType geneticAlgorithmType;
         [Header("Mutation Details")]
         [FormerlySerializedAs("mutationChance")] public float chanceToMutateNewPerson;

@@ -49,13 +49,13 @@ namespace Game
         private void UpdateRound()
         {
             _timePassedFromLastGameEpochUpdate = 0f;
-            _gameModel.CurrentRoundEpochPassed = 0;
+            _gameModel.CurrentRoundTimePassed = 0;
             _gameModel.CurrentRound += 1;
         }
 
         private bool ShouldNewRoundStart()
         {
-            return _gameModel.CurrentRoundEpochPassed >= _gameConfig.roundDuration;
+            return _gameModel.CurrentRoundTimePassed >= _gameConfig.roundDuration;
         }
 
         private bool CheckIfGameFinished()
@@ -66,8 +66,8 @@ namespace Game
         private void UpdateRoundTimePassed()
         {
             _timePassedFromLastGameEpochUpdate += Time.fixedDeltaTime;
-            if (_timePassedFromLastGameEpochUpdate < _gameConfig.updateEpochTime) return;
-            _gameModel.CurrentRoundEpochPassed += 1;
+            if (_timePassedFromLastGameEpochUpdate < 1) return;
+            _gameModel.CurrentRoundTimePassed += 1;
             _timePassedFromLastGameEpochUpdate = 0f;
         }
     }

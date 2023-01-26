@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using TMPro;
 using UnityEngine;
 
 namespace Ui.Menu.InputField
@@ -9,10 +10,20 @@ namespace Ui.Menu.InputField
         [SerializeField] public int maxRange;
         [SerializeField] public int minRange;
 
+        protected void Start()
+        {
+            var textComp = (TMP_Text) inputField.placeholder;
+            textComp.text = $"Enter a number between ({minRange}, {maxRange})";
+        }
+
         protected override string OnInputValidate(string inpString)
         {
-            string validateString;
-            var canConvert = int.TryParse(inpString, out var convertedNumber);
+            var validateString = inpString;
+            if (inpString.Contains("."))
+            {
+                validateString = inpString.Replace(".", "");
+            }
+            var canConvert = int.TryParse(validateString, out var convertedNumber);
             if (!canConvert)
             {
                 validateString = defaultValue.ToString(CultureInfo.InvariantCulture);

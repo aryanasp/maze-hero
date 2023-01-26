@@ -87,7 +87,7 @@ namespace Ai
         {
             foreach (var agent in newGeneration)
             {
-                if (UnityEngine.Random.Range(0f, 1f) <= _geneticAlgorithmConfig.mutationChance)
+                if (UnityEngine.Random.Range(0f, 1f) <= _geneticAlgorithmConfig.chanceToMutateNewPerson)
                 {
                     agent.Mutate(_geneticAlgorithmConfig.geneMutationChance);
                 }

@@ -1,12 +1,29 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Ai
 {
+    public enum InitialPopulationHeuristic
+    {
+        Random = 0,
+        AStar = 1 
+    }
+    public enum GeneticAlgorithmType
+    {
+        TimeAsState = 0,
+        GridAsState = 1
+    }
     [CreateAssetMenu(fileName = "GeneticAlgorithmConfig", menuName = "Game/Ai/GeneticAlgorithmConfig", order = 0)]
     public class GeneticAlgorithmConfig : ScriptableObject
     {
-        public int initialPopulation;
-        public float mutationChance;
+        [Header("Start Population")]
+        public int initialPopulation = 2;
+        public InitialPopulationHeuristic initialHeuristic;
+        [Space]
+        [Header("Algorithm Details")]
+        public GeneticAlgorithmType geneticAlgorithmType;
+        [Header("Mutation Details")]
+        [FormerlySerializedAs("mutationChance")] public float chanceToMutateNewPerson;
         public float geneMutationChance;
     }
 }

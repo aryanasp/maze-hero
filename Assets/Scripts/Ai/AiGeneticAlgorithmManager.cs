@@ -20,7 +20,7 @@ namespace Ai
         {
             //TODO: Generate Agents
             AddInitPopulation();
-            _gameModel.IsPausing = false;
+            _gameModel.IsStartingRoundAgain = false;
             _gameModel.OnRoundChanged += UpdateAgents;
         }
 
@@ -56,14 +56,14 @@ namespace Ai
         {
             SortByFitnessFunction(); // We need to sort them before pausing and reset game
             PrintScores();
-            _gameModel.IsPausing = true;
+            _gameModel.IsStartingRoundAgain = true;
             Selection();
             var newGeneration = CrossOver();
             MutateNewGeneration(newGeneration);
             RemoveOldGeneration();
             newGeneration.ForEach(_agents.Add);
             _agents.ForEach(agent => agent.ResetRound());
-            _gameModel.IsPausing = false;
+            _gameModel.IsStartingRoundAgain = false;
         }
 
         private void RemoveOldGeneration()

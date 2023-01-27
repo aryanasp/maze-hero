@@ -43,7 +43,7 @@ namespace Game
 
         private bool CheckGameIsPaused()
         {
-            return _gameModel.IsPausing;
+            return _gameModel.IsStartingRoundAgain;
         }
 
         private void UpdateRound()

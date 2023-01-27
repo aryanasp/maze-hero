@@ -41,7 +41,7 @@ namespace Character
         {
             Logger.Log($"[Move]: {_moveModel.IsMoving}");
             Logger.Log($"[Move]: {_moveModel.CurrentMoveSpeed}");
-            if (_gameModel.IsPausing)
+            if (_gameModel.IsStartingRoundAgain)
             {
                 return;
             }

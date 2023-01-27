@@ -11,12 +11,12 @@ namespace Character
         
         private void Start()
         {
-            _gameModel.OnGamePausedChanged += ResetScore;
+            _gameModel.OnGameStartingRoundAgainStateChange += ResetScore;
         }
 
         private void OnDestroy()
         {
-            _gameModel.OnGamePausedChanged -= ResetScore;
+            _gameModel.OnGameStartingRoundAgainStateChange -= ResetScore;
         }
 
         private void ResetScore()

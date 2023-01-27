@@ -5,11 +5,11 @@ namespace Game
 {
     public class GameModel
     {
-        private bool _isPausing = true;
+        private bool _isStartingRoundAgain = true;
         private int _currentRound;
         private int _currentRoundTimePassed;
 
-        public Action OnGamePausedChanged = () => { };
+        public Action OnGameStartingRoundAgainStateChange = () => { };
         public Action OnRoundChanged = () => { };
         public Action OnRoundTimePassedUpdate = () => { };
 
@@ -39,17 +39,17 @@ namespace Game
             }
         }
 
-        public bool IsPausing
+        public bool IsStartingRoundAgain
         {
-            get => _isPausing;
+            get => _isStartingRoundAgain;
             set
             {
-                if (_isPausing == value)
+                if (_isStartingRoundAgain == value)
                 {
                     return;
                 }
-                _isPausing = value;
-                OnGamePausedChanged.Invoke();
+                _isStartingRoundAgain = value;
+                OnGameStartingRoundAgainStateChange.Invoke();
             }
         }
     }

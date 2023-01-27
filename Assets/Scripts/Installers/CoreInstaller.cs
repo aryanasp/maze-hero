@@ -29,6 +29,7 @@ namespace Installers
                 .AsSingle();
             Container.Bind<GeneticAlgorithmConfig>().FromInstance(geneticAlgorithmConfig)
                 .AsSingle();
+            Container.Bind<AiGeneticAlgorithmModel>().AsSingle();
             Container.Bind<CurrentRoundStatModel>().AsSingle();
             Container.Bind<GameAnalyzerModel>().AsSingle();
             Container.Bind<GameAnalyzerLogic>().AsSingle();

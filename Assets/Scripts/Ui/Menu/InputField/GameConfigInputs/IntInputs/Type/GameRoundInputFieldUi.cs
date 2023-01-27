@@ -7,6 +7,12 @@
             _gameConfig.roundCount = finalValue;
         }
 
+        protected override void Initialize()
+        {
+            inputField.text = _gameConfig.roundCount.ToString();
+
+        }
+
         protected override string GetDescription()
         {
             return "Round Counts";

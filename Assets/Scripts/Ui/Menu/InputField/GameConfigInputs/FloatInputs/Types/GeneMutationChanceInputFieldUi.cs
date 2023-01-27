@@ -1,7 +1,14 @@
-﻿namespace Ui.Menu.InputField
+﻿using System.Globalization;
+
+namespace Ui.Menu.InputField
 {
     public class GeneMutationChanceInputFieldUi : BaseGameConfigFloatInputField
     {
+        protected override void Initialize()
+        {
+            inputField.text = _geneticAlgorithmConfig.geneMutationChance.ToString(CultureInfo.InvariantCulture);
+        }
+
         protected override string GetDescription()
         {
             return "Gene Mutate Chance";

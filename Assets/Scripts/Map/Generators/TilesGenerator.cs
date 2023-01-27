@@ -13,7 +13,7 @@ namespace Map
         [SerializeField] private GameObject tilePrefab;
 
         [Inject] public MapModel MapModel;
-        [Inject] private GameModel _gameModel;
+        [Inject] private GameTimeModel _gameTimeModel;
         private UnityEngine.Camera _camera;
         
         void Start()
@@ -26,12 +26,12 @@ namespace Map
             var tileCountInHalfVertical = (int)(cameraSize.Y * 0.5f / tileSize.Y);
             GenerateTiles(tilesCountInHalfHorizontal, tileCountInHalfVertical, tileSize);
             MapModel.IsTilesGenerated = true;
-            _gameModel.OnGameStartingRoundAgainStateChange += ToggleGenerateMaze;
+            _gameTimeModel.OnGameStartingRoundAgainStateChange += ToggleGenerateMaze;
         }
 
         private void OnDestroy()
         {
-            _gameModel.OnGameStartingRoundAgainStateChange -= ToggleGenerateMaze;
+            _gameTimeModel.OnGameStartingRoundAgainStateChange -= ToggleGenerateMaze;
         }
 
         private void ToggleGenerateMaze()

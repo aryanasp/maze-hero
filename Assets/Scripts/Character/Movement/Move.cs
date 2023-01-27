@@ -13,7 +13,7 @@ namespace Character
 {
     public class Move : MonoBehaviour
     {
-        [Inject] private GameModel _gameModel;
+        [Inject] private GameTimeModel _gameTimeModel;
         [Inject] private MoveModel _moveModel;
         
         [SerializeField] private Transform moveObject;
@@ -41,7 +41,7 @@ namespace Character
         {
             Logger.Log($"[Move]: {_moveModel.IsMoving}");
             Logger.Log($"[Move]: {_moveModel.CurrentMoveSpeed}");
-            if (_gameModel.IsStartingRoundAgain)
+            if (_gameTimeModel.IsStartingRoundAgain)
             {
                 return;
             }

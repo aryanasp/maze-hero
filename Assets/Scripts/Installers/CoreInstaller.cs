@@ -3,6 +3,7 @@ using Ai;
 using Character.Factory;
 using Design;
 using Game;
+using Game.GameAnalyzer;
 using Map;
 using UnityEngine;
 using Zenject;
@@ -18,7 +19,7 @@ namespace Installers
         {
             Container.Bind<GameConfig>().FromInstance(gameConfig)
                 .AsSingle();
-            Container.Bind<GameModel>()
+            Container.Bind<GameTimeModel>()
                 .AsSingle();
             Container.Bind<MazeConfig>().FromInstance(mazeConfig)
                 .AsSingle();
@@ -28,6 +29,9 @@ namespace Installers
                 .AsSingle();
             Container.Bind<GeneticAlgorithmConfig>().FromInstance(geneticAlgorithmConfig)
                 .AsSingle();
+            Container.Bind<CurrentRoundStatModel>().AsSingle();
+            Container.Bind<GameAnalyzerModel>().AsSingle();
+            Container.Bind<GameAnalyzerLogic>().AsSingle();
             InstallCharacterFactory();
         }
 

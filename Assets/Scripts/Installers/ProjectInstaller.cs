@@ -9,6 +9,8 @@ namespace Installers
         public override void InstallBindings()
         {
             Container.Bind<CursorVisible>().AsSingle();
+            Container.Bind<GameStatModel>().AsSingle();
+            Container.Bind<GameReportManager>().AsSingle();
         }
     }
 }

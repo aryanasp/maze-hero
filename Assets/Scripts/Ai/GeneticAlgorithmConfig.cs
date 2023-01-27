@@ -18,7 +18,7 @@ namespace Ai
     public class GeneticAlgorithmConfig : ScriptableObject
     {
         [Header("Start Population")]
-        public int initialPopulation = 2;
+        public int initialPopulation = 4;
         public InitialPopulationHeuristic initialHeuristic;
         [Space]
         [Header("Algorithm Details")]

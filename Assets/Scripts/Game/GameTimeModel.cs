@@ -1,9 +1,8 @@
 ﻿using System;
-using UnityEngine;
 
 namespace Game
 {
-    public class GameModel
+    public class GameTimeModel
     {
         private bool _isStartingRoundAgain = true;
         private int _currentRound;

@@ -7,7 +7,7 @@ namespace Game
     public class GameTimeLogic : MonoBehaviour
     {
         [Inject] private GameConfig _gameConfig;
-        [Inject] private GameModel _gameModel;
+        [Inject] private GameTimeModel _gameTimeModel;
 
         private float _timePassedFromLastGameEpochUpdate;
         
@@ -45,36 +45,36 @@ namespace Game
 
         private bool CheckIfNeedEndSession()
         {
-            return _gameModel.CurrentRound > _gameConfig.roundCount;
+            return _gameTimeModel.CurrentRound > _gameConfig.roundCount;
         }
 
         private bool CheckGameIsPaused()
         {
-            return _gameModel.IsStartingRoundAgain;
+            return _gameTimeModel.IsStartingRoundAgain;
         }
 
         private void UpdateRound()
         {
             _timePassedFromLastGameEpochUpdate = 0f;
-            _gameModel.CurrentRoundTimePassed = 0;
-            _gameModel.CurrentRound += 1;
+            _gameTimeModel.CurrentRoundTimePassed = 0;
+            _gameTimeModel.CurrentRound += 1;
         }
 
         private bool ShouldNewRoundStart()
         {
-            return _gameModel.CurrentRoundTimePassed >= _gameConfig.roundDuration;
+            return _gameTimeModel.CurrentRoundTimePassed >= _gameConfig.roundDuration;
         }
 
         private bool CheckIfGameFinished()
         {
-            return _gameModel.CurrentRound >= _gameConfig.roundCount ;
+            return _gameTimeModel.CurrentRound >= _gameConfig.roundCount ;
         }
 
         private void UpdateRoundTimePassed()
         {
             _timePassedFromLastGameEpochUpdate += Time.fixedDeltaTime;
             if (_timePassedFromLastGameEpochUpdate < 1) return;
-            _gameModel.CurrentRoundTimePassed += 1;
+            _gameTimeModel.CurrentRoundTimePassed += 1;
             _timePassedFromLastGameEpochUpdate = 0f;
         }
     }

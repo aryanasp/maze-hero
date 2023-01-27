@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Character.Ai.GeneticAlgorithm;
 using Character.Factory;
 using Game;
+using Game.GameAnalyzer;
 using UnityEngine;
 using Zenject;
 using Logger = Log.Logger;
@@ -10,24 +12,26 @@ namespace Ai
 {
     public class AiGeneticAlgorithmManager : MonoBehaviour
     {
-        [Inject] private GameModel _gameModel;
+        [Inject] private GameTimeModel _gameTimeModel;
         [Inject] private CharacterFactory _characterFactory;
         [Inject] private GeneticAlgorithmConfig _geneticAlgorithmConfig;
+        [Inject] private AiGeneticAlgorithmModel _geneticAlgorithmModel;
+        [Inject] private GameAnalyzerModel _gameAnalyzerModel;
+        [Inject] private CurrentRoundStatModel _currentRoundStatModel;
         private int _agentIndex = 0;
-        private List<IGeneticAlgorithmAgent> _agents;
 
         public void Start()
         {
             //TODO: Generate Agents
             AddInitPopulation();
-            _gameModel.IsStartingRoundAgain = false;
-            _gameModel.OnRoundChanged += UpdateAgents;
+            _gameTimeModel.IsStartingRoundAgain = false;
+            _gameTimeModel.OnRoundChanged += UpdateAgents;
         }
 
         private void AddInitPopulation()
         {
             var newPopulation = GenerateRandomNewPopulation(_geneticAlgorithmConfig.initialPopulation);
-            _agents = newPopulation;
+            _geneticAlgorithmModel.Agents = newPopulation;
         }
 
         private List<IGeneticAlgorithmAgent> GenerateRandomNewPopulation(int count)
@@ -55,31 +59,22 @@ namespace Ai
         private void UpdateAgents()
         {
             SortByFitnessFunction(); // We need to sort them before pausing and reset game
-            PrintScores();
-            _gameModel.IsStartingRoundAgain = true;
+            _currentRoundStatModel.MaxScore = _geneticAlgorithmModel.Agents.Last().GetScore();
+            _gameAnalyzerModel.TriggerStartAnalyze = true;
+            _gameTimeModel.IsStartingRoundAgain = true;
             Selection();
             var newGeneration = CrossOver();
             MutateNewGeneration(newGeneration);
             RemoveOldGeneration();
-            newGeneration.ForEach(_agents.Add);
-            _agents.ForEach(agent => agent.ResetRound());
-            _gameModel.IsStartingRoundAgain = false;
+            newGeneration.ForEach(_geneticAlgorithmModel.Agents.Add);
+            _geneticAlgorithmModel.Agents.ForEach(agent => agent.ResetRound());
+            _gameTimeModel.IsStartingRoundAgain = false;
         }
 
         private void RemoveOldGeneration()
         {
-            _agents.ForEach(item => Destroy(item.GetGameObject()));
-            _agents.Clear();
-        }
-
-        private void PrintScores()
-        {
-            string scoresPrint = "";
-            _agents.ForEach(agent =>
-            {
-                scoresPrint += agent.GetScore() + ", ";
-            });
-            Logger.Log(scoresPrint, true);
+            _geneticAlgorithmModel.Agents.ForEach(item => Destroy(item.GetGameObject()));
+            _geneticAlgorithmModel.Agents.Clear();
         }
 
         private void MutateNewGeneration(List<IGeneticAlgorithmAgent> newGeneration)
@@ -98,12 +93,12 @@ namespace Ai
         private List<IGeneticAlgorithmAgent> CrossOver()
         {
             var newGeneration = new List<IGeneticAlgorithmAgent>();
-            for (int i = 0; i < _agents.Count; i += 2)
+            for (int i = 0; i < _geneticAlgorithmModel.Agents.Count; i += 2)
             {
                 var agent1 = AdjustTransform(_characterFactory.Create()).GetComponent<IGeneticAlgorithmAgent>();
                 var agent2 = AdjustTransform(_characterFactory.Create()).GetComponent<IGeneticAlgorithmAgent>();
-                agent1.Combine(_agents[i], _agents[i + 1]);
-                agent2.Combine(_agents[i + 1], _agents[i]);
+                agent1.Combine(_geneticAlgorithmModel.Agents[i], _geneticAlgorithmModel.Agents[i + 1]);
+                agent2.Combine(_geneticAlgorithmModel.Agents[i + 1], _geneticAlgorithmModel.Agents[i]);
                 newGeneration.Add(agent1);
                 newGeneration.Add(agent2);
             }
@@ -113,18 +108,18 @@ namespace Ai
 
         private void Selection()
         {
-            var count = _agents.Count;
+            var count = _geneticAlgorithmModel.Agents.Count;
             for (int i = 0; i < count / 2; i++)
             {
                 // _agentIndex--;
-                Destroy(_agents[0].GetGameObject());
-                _agents.Remove(_agents[0]);
+                Destroy(_geneticAlgorithmModel.Agents[0].GetGameObject());
+                _geneticAlgorithmModel.Agents.Remove(_geneticAlgorithmModel.Agents[0]);
             }
         }
 
         private void SortByFitnessFunction()
         {
-            _agents.Sort();
+            _geneticAlgorithmModel.Agents.Sort();
         }
     }
 }

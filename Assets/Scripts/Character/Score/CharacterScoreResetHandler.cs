@@ -7,16 +7,16 @@ namespace Character
     public class CharacterScoreResetHandler : MonoBehaviour
     {
         [Inject] private ScoreModel _scoreModel;
-        [Inject] private GameModel _gameModel;
+        [Inject] private GameTimeModel _gameTimeModel;
         
         private void Start()
         {
-            _gameModel.OnGameStartingRoundAgainStateChange += ResetScore;
+            _gameTimeModel.OnGameStartingRoundAgainStateChange += ResetScore;
         }
 
         private void OnDestroy()
         {
-            _gameModel.OnGameStartingRoundAgainStateChange -= ResetScore;
+            _gameTimeModel.OnGameStartingRoundAgainStateChange -= ResetScore;
         }
 
         private void ResetScore()

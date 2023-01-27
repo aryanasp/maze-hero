@@ -44,5 +44,11 @@ namespace Game
                 MaxScore = maxScore;
             }
         }
+
+        public void Reset()
+        {
+            ApplesEaten = 0;
+            MaxScore = 0;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 namespace Game
 {
@@ -7,9 +8,10 @@ namespace Game
     public struct RoundStat
     {
         public int appleEaten;
-        public int maxScore;
+        public double maxScoreToApplesTotalScoreFragment;
+        public int peopleCountHigherThanAverage;
         public double percentageOfHigherThanAveragePeople;
-        public double maxScorePerAverage;
+        public double maxScoreToAverageFragment;
     }
     
     public class GameStatModel

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Ai;
 using Game;
 using Map;
@@ -19,15 +18,20 @@ namespace Ui.Core.Hud
         [Inject] private GameStatModel _gameStatModel;
         [Inject] private GameTimeModel _gameTimeModel;
         [Inject] private AiGeneticAlgorithmModel _geneticAlgorithmModel;
-        [Inject] private MapModel _mapModel;
+        [Inject] private MazeConfig _mazeConfig;
         private int _totalApples;
-        
+
         private void Start()
         {
-            foreach (var _ in _mapModel.Tiles.Values.Where(tiles => tiles.HasBlock).Where(tiles => tiles.BlockType == BlockType.Apple))
+            foreach (var mapObject in _mazeConfig.mapObjects)
             {
-                _totalApples++;
+                if (mapObject.blockType == BlockType.Apple)
+                {
+                    _totalApples++;
+                }
             }
+            UpdateAppleEat();
+            UpdateMaxScore();
             _currentRoundStatModel.OnAppleEat += UpdateAppleEat;
             _currentRoundStatModel.OnMaxScoreChange += UpdateMaxScore;
             _gameTimeModel.OnGameStartingRoundAgainStateChange += UpdateAverage;
@@ -52,13 +56,16 @@ namespace Ui.Core.Hud
 
         private void UpdateAverage()
         {
+            if (!_gameTimeModel.IsStartingRoundAgain)
+            {
+                return;
+            }
             peopleMoreThanAverage.text =
                 $"Last Round People > Avg: {CalculatePeopleHigherThanAverage()} / {_geneticAlgorithmModel.Agents.Count}";
 
             int CalculatePeopleHigherThanAverage()
             {
-                return ((int)_gameStatModel.RoundsStat.Last().Value.percentageOfHigherThanAveragePeople *
-                        _geneticAlgorithmModel.Agents.Count);
+                return _gameStatModel.RoundsStat.Values.Last().peopleCountHigherThanAverage;
             }
         }
     }

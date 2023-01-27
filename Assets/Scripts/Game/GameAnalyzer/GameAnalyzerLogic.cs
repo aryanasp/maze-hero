@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ai;
 using Game.GameAnalyzer;
 using Log;
@@ -16,13 +17,13 @@ namespace Game.GameAnalyzer
         private GeneticAlgorithmConfig _geneticAlgorithmConfig;
         private AiGeneticAlgorithmModel _geneticAlgorithmModel;
         private GameAnalyzerModel _gameAnalyzerModel;
-        private MapModel _mapModel;
-
+        private MazeConfig _mazeConfig;
+        private int _totalApples;
         [Inject]
         public GameAnalyzerLogic(GameConfig gameConfig, GameStatModel gameStatModel,
             GameTimeModel gameTimeModel, CurrentRoundStatModel currentRoundStatModel,
             GeneticAlgorithmConfig geneticAlgorithmConfig, AiGeneticAlgorithmModel geneticAlgorithmModel,
-            GameAnalyzerModel gameAnalyzerModel, MapModel mapModel)
+            GameAnalyzerModel gameAnalyzerModel, MazeConfig mazeConfig)
         {
             _gameConfig = gameConfig;
             _gameStatModel = gameStatModel;
@@ -31,8 +32,15 @@ namespace Game.GameAnalyzer
             _geneticAlgorithmConfig = geneticAlgorithmConfig;
             _geneticAlgorithmModel = geneticAlgorithmModel;
             _gameAnalyzerModel = gameAnalyzerModel;
-            _mapModel = mapModel;
+            _mazeConfig = mazeConfig;
             _gameAnalyzerModel.TriggerAnalyzeGame += OnAnalyze;
+            foreach (var mapObject in _mazeConfig.mapObjects)
+            {
+                if (mapObject.blockType == BlockType.Apple)
+                {
+                    _totalApples++;
+                }
+            }
         }
         
         public void Dispose()
@@ -44,33 +52,24 @@ namespace Game.GameAnalyzer
         {
             PrintScores();
             _gameStatModel.RecordRoundStat(_gameTimeModel.CurrentRound, AnalyzeGame());
+            _currentRoundStatModel.Reset();
         }
 
         private RoundStat AnalyzeGame()
         {
-            int sumScores = 0;
-            foreach (var geneticAlgorithmAgent in _geneticAlgorithmModel.Agents)
-            {
-                sumScores += geneticAlgorithmAgent.GetScore();
-            }
+            int sumScores = _geneticAlgorithmModel.Agents.Sum(geneticAlgorithmAgent => geneticAlgorithmAgent.GetScore());
             var averageScores = sumScores * 1d / _geneticAlgorithmModel.Agents.Count;
             var peopleHigherThanAverage =
                 _geneticAlgorithmModel.Agents.FindAll(agent => agent.GetScore() >= averageScores);
             var roundStat = new RoundStat
             {
                 appleEaten = _currentRoundStatModel.ApplesEaten,
-                maxScore = _currentRoundStatModel.MaxScore,
+                maxScoreToApplesTotalScoreFragment = _currentRoundStatModel.MaxScore * 1d / _totalApples,
+                peopleCountHigherThanAverage = peopleHigherThanAverage.Count,
                 percentageOfHigherThanAveragePeople =
-                    peopleHigherThanAverage.Count * 1d / _geneticAlgorithmConfig.initialPopulation
+                    peopleHigherThanAverage.Count * 1d / _geneticAlgorithmModel.Agents.Count,
+                maxScoreToAverageFragment = averageScores == 0?99999d : _currentRoundStatModel.MaxScore / averageScores
             };
-            if (averageScores == 0)
-            {
-                roundStat.maxScorePerAverage = 99999d;
-            }
-            else
-            {
-                roundStat.maxScorePerAverage = _currentRoundStatModel.MaxScore / averageScores;
-            }
             return roundStat;
         }
 

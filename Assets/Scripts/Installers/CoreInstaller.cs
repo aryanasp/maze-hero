@@ -12,13 +12,10 @@ namespace Installers
 {
     public class CoreInstaller : MonoInstaller
     {
-        [SerializeField] private GameConfig gameConfig;
         [SerializeField] private MazeConfig mazeConfig;
         [SerializeField] private GeneticAlgorithmConfig geneticAlgorithmConfig;
         public override void InstallBindings()
         {
-            Container.Bind<GameConfig>().FromInstance(gameConfig)
-                .AsSingle();
             Container.Bind<GameTimeModel>()
                 .AsSingle();
             Container.Bind<MazeConfig>().FromInstance(mazeConfig)
@@ -32,7 +29,7 @@ namespace Installers
             Container.Bind<AiGeneticAlgorithmModel>().AsSingle();
             Container.Bind<CurrentRoundStatModel>().AsSingle();
             Container.Bind<GameAnalyzerModel>().AsSingle();
-            Container.Bind<GameAnalyzerLogic>().AsSingle();
+            Container.Bind<GameAnalyzerLogic>().AsSingle().NonLazy();
             InstallCharacterFactory();
         }
 

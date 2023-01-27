@@ -16,7 +16,7 @@ namespace Character.Ai.GeneticAlgorithm
         [Inject] private MoveModel _characterMoveModel;
         [Inject] private MoveConfig _moveConfig;
         [SerializeField] private Transform rigidBodyTransform;
-        
+
         private List<MoveModel> _dna;
         private int _eachRoundTotalEpochs;
         private int _currentRoundEpochIndex;
@@ -30,6 +30,7 @@ namespace Character.Ai.GeneticAlgorithm
             {
                 _dna.Add(new MoveModel());
             }
+
             _aiProcess = StartCoroutine(ProcessUpdateMoveModel());
         }
 
@@ -37,7 +38,7 @@ namespace Character.Ai.GeneticAlgorithm
         {
             _currentRoundEpochIndex = 0;
             var timeToStay = new WaitForSeconds(_geneticAlgorithmConfig.updateEpochTime);
-            while (true)
+            while (_currentRoundEpochIndex < _eachRoundTotalEpochs)
             {
                 UpdateMoveModel();
                 yield return timeToStay;
@@ -47,7 +48,10 @@ namespace Character.Ai.GeneticAlgorithm
 
         private void OnDestroy()
         {
-            StopCoroutine(_aiProcess);
+            if (_aiProcess != null)
+            {
+                StopCoroutine(_aiProcess);
+            }
         }
 
         private void UpdateMoveModel()
@@ -77,8 +81,13 @@ namespace Character.Ai.GeneticAlgorithm
 
         public void ResetRound()
         {
-            _currentRoundEpochIndex = 0;
             ResetPos();
+            if (_aiProcess != null)
+            {
+                StopCoroutine(_aiProcess);
+            }
+
+            _aiProcess = StartCoroutine(ProcessUpdateMoveModel());
         }
 
         private void FillGeneRandom(MoveModel gene)
@@ -88,13 +97,15 @@ namespace Character.Ai.GeneticAlgorithm
             gene.IsMoving = Random.Range(0f, 1f) >= 0.5f;
         }
 
-        private void Combine(TimeAsStateGeneticAlgorithmAgent agentParent1, TimeAsStateGeneticAlgorithmAgent agentParent2)
+        private void Combine(TimeAsStateGeneticAlgorithmAgent agentParent1,
+            TimeAsStateGeneticAlgorithmAgent agentParent2)
         {
             var halfCount = _eachRoundTotalEpochs / 2;
             for (int i = 0; i < halfCount; i++)
             {
                 _dna[i] = agentParent1._dna[i];
             }
+
             for (int i = halfCount; i < _eachRoundTotalEpochs; i++)
             {
                 _dna[i] = agentParent2._dna[i];

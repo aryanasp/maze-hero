@@ -82,12 +82,6 @@ namespace Character.Ai.GeneticAlgorithm
         public void ResetRound()
         {
             ResetPos();
-            if (_aiProcess != null)
-            {
-                StopCoroutine(_aiProcess);
-            }
-
-            _aiProcess = StartCoroutine(ProcessUpdateMoveModel());
         }
 
         private void FillGeneRandom(MoveModel gene)
@@ -114,7 +108,6 @@ namespace Character.Ai.GeneticAlgorithm
 
         private void ResetPos()
         {
-            _currentRoundEpochIndex = 0;
             transform.localPosition = Vector3.zero;
             rigidBodyTransform.localPosition = new Vector3(0.216f, 0.363f);
         }

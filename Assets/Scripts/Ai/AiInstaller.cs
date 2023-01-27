@@ -6,7 +6,7 @@ namespace Ai
 {
     public class AiInstaller : MonoInstaller<AiInstaller>
     {
-        [SerializeField] private GeneticAlgorithmAgent agent;
+        [SerializeField] private TimeAsStateGeneticAlgorithmAgent agent;
         public override void InstallBindings()
         {
             Container.BindInstance(agent).AsSingle();

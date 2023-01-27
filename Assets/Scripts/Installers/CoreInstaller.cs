@@ -1,3 +1,4 @@
+using System;
 using Ai;
 using Character.Factory;
 using Design;
@@ -13,7 +14,6 @@ namespace Installers
         [SerializeField] private GameConfig gameConfig;
         [SerializeField] private MazeConfig mazeConfig;
         [SerializeField] private GeneticAlgorithmConfig geneticAlgorithmConfig;
-        [SerializeField] private GameObject characterPrefab;
         public override void InstallBindings()
         {
             Container.Bind<GameConfig>().FromInstance(gameConfig)
@@ -26,11 +26,28 @@ namespace Installers
                 .AsSingle();
             Container.Bind<MapModel>()
                 .AsSingle();
-            Container.BindFactory<GameObject, CharacterFactory>()
-                .FromSubContainerResolve()
-                .ByNewContextPrefab(characterPrefab).AsSingle();
             Container.Bind<GeneticAlgorithmConfig>().FromInstance(geneticAlgorithmConfig)
                 .AsSingle();
+            InstallCharacterFactory();
+        }
+
+        private void InstallCharacterFactory()
+        {
+            switch (geneticAlgorithmConfig.geneticAlgorithmType)
+            {
+                case GeneticAlgorithmType.TimeAsState:
+                    Container.BindFactory<GameObject, CharacterFactory>()
+                        .FromSubContainerResolve()
+                        .ByNewContextPrefabResource("Character/TimeAsState/Character").AsSingle();
+                    break;
+                case GeneticAlgorithmType.GridAsState:
+                    Container.BindFactory<GameObject, CharacterFactory>()
+                        .FromSubContainerResolve()
+                        .ByNewContextPrefabResource("Character/GridAsState/Character").AsSingle();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

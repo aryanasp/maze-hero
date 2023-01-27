@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: GeneticAlgorithmConfig
   m_EditorClassIdentifier: 
   initialPopulation: 40
-  mutationChance: 0.2
+  initialHeuristic: 0
+  updateEpochTime: 0.03
+  geneticAlgorithmType: 0
+  chanceToMutateNewPerson: 0.2
   geneMutationChance: 0.4

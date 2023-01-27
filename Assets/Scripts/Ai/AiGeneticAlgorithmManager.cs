@@ -2,7 +2,6 @@
 using Character.Ai.GeneticAlgorithm;
 using Character.Factory;
 using Game;
-using UnityEditor;
 using UnityEngine;
 using Zenject;
 using Logger = Log.Logger;
@@ -15,7 +14,7 @@ namespace Ai
         [Inject] private CharacterFactory _characterFactory;
         [Inject] private GeneticAlgorithmConfig _geneticAlgorithmConfig;
         private int _agentIndex = 0;
-        public List<GeneticAlgorithmAgent> agents;
+        private List<IGeneticAlgorithmAgent> _agents;
 
         public void Start()
         {
@@ -28,16 +27,16 @@ namespace Ai
         private void AddInitPopulation()
         {
             var newPopulation = GenerateRandomNewPopulation(_geneticAlgorithmConfig.initialPopulation);
-            agents = newPopulation;
+            _agents = newPopulation;
         }
 
-        private List<GeneticAlgorithmAgent> GenerateRandomNewPopulation(int count)
+        private List<IGeneticAlgorithmAgent> GenerateRandomNewPopulation(int count)
         {
-            var newPopulation = new List<GeneticAlgorithmAgent>();
+            var newPopulation = new List<IGeneticAlgorithmAgent>();
             for (int i = 0; i < count; i++)
             {
                 var agentGameObject = AdjustTransform(_characterFactory.Create());
-                var geneticAlgorithmAgent = agentGameObject.GetComponent<GeneticAlgorithmAgent>();
+                var geneticAlgorithmAgent = agentGameObject.GetComponent<IGeneticAlgorithmAgent>();
                 geneticAlgorithmAgent.FillRandom();
                 newPopulation.Add(geneticAlgorithmAgent);
             }
@@ -62,28 +61,28 @@ namespace Ai
             var newGeneration = CrossOver();
             MutateNewGeneration(newGeneration);
             RemoveOldGeneration();
-            newGeneration.ForEach(agents.Add);
-            agents.ForEach(agent => agent.ResetPos());
+            newGeneration.ForEach(_agents.Add);
+            _agents.ForEach(agent => agent.ResetRound());
             _gameModel.IsPausing = false;
         }
 
         private void RemoveOldGeneration()
         {
-            agents.ForEach(item => Destroy(item.gameObject));
-            agents.Clear();
+            _agents.ForEach(item => Destroy(item.GetGameObject()));
+            _agents.Clear();
         }
 
         private void PrintScores()
         {
             string scoresPrint = "";
-            agents.ForEach(agent =>
+            _agents.ForEach(agent =>
             {
                 scoresPrint += agent.GetScore() + ", ";
             });
             Logger.Log(scoresPrint, true);
         }
 
-        private void MutateNewGeneration(List<GeneticAlgorithmAgent> newGeneration)
+        private void MutateNewGeneration(List<IGeneticAlgorithmAgent> newGeneration)
         {
             foreach (var agent in newGeneration)
             {
@@ -96,15 +95,15 @@ namespace Ai
             newRandomPopulation.ForEach(newGeneration.Add);
         }
 
-        private List<GeneticAlgorithmAgent> CrossOver()
+        private List<IGeneticAlgorithmAgent> CrossOver()
         {
-            var newGeneration = new List<GeneticAlgorithmAgent>();
-            for (int i = 0; i < agents.Count; i += 2)
+            var newGeneration = new List<IGeneticAlgorithmAgent>();
+            for (int i = 0; i < _agents.Count; i += 2)
             {
-                var agent1 = AdjustTransform(_characterFactory.Create()).GetComponent<GeneticAlgorithmAgent>();
-                var agent2 = AdjustTransform(_characterFactory.Create()).GetComponent<GeneticAlgorithmAgent>();
-                agent1.Combine(agents[i], agents[i + 1]);
-                agent2.Combine(agents[i + 1], agents[i]);
+                var agent1 = AdjustTransform(_characterFactory.Create()).GetComponent<IGeneticAlgorithmAgent>();
+                var agent2 = AdjustTransform(_characterFactory.Create()).GetComponent<IGeneticAlgorithmAgent>();
+                agent1.Combine(_agents[i], _agents[i + 1]);
+                agent2.Combine(_agents[i + 1], _agents[i]);
                 newGeneration.Add(agent1);
                 newGeneration.Add(agent2);
             }
@@ -114,18 +113,18 @@ namespace Ai
 
         private void Selection()
         {
-            var count = agents.Count;
+            var count = _agents.Count;
             for (int i = 0; i < count / 2; i++)
             {
                 // _agentIndex--;
-                Destroy(agents[0].gameObject);
-                agents.Remove(agents[0]);
+                Destroy(_agents[0].GetGameObject());
+                _agents.Remove(_agents[0]);
             }
         }
 
         private void SortByFitnessFunction()
         {
-            agents.Sort();
+            _agents.Sort();
         }
     }
 }

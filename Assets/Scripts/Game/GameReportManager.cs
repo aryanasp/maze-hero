@@ -30,19 +30,16 @@ namespace Game
             {
                 return;
             }
-
             var stringBuilder = new StringBuilder();
             //TODO: Generate a CSV file by indexing round number and inputs in game config and genetic algorithm config
-            using (var writer = new StreamWriter("Report.csv"))
+            using var writer = new StreamWriter("Assets/Resources/Report.csv");
+            stringBuilder.AppendLine(
+                "Round Number, Apples Eaten, Max Score Fragment, Higher Than Average People Fragment, Max Score To Average Fragment");
+            foreach (var keyValue in _gameStatModel.RoundsStat)
             {
-                stringBuilder.AppendLine(
-                    "Round Number, Apples Eaten, Max Score Fragment, Higher Than Average People Fragment, Max Score To Average Fragment");
-                foreach (var keyValue in _gameStatModel.RoundsStat)
-                {
-                    stringBuilder.AppendLine($"{keyValue.Key}, {keyValue.Value.appleEaten}, {keyValue.Value.maxScoreToApplesTotalScoreFragment * 100d}, {keyValue.Value.percentageOfHigherThanAveragePeople * 100d}, {keyValue.Value.maxScoreToAverageFragment * 100d}");
-                }
-                writer.Write(stringBuilder.ToString());
+                stringBuilder.AppendLine($"{keyValue.Key}, {keyValue.Value.appleEaten}, {keyValue.Value.maxScoreToApplesTotalScoreFragment * 100d}, {keyValue.Value.percentageOfHigherThanAveragePeople * 100d}, {keyValue.Value.maxScoreToAverageFragment * 100d}");
             }
+            writer.Write(stringBuilder.ToString());
         }
     }
 }

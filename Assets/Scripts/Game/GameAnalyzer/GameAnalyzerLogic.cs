@@ -55,7 +55,7 @@ namespace Game.GameAnalyzer
             }
             var averageScores = sumScores * 1d / _geneticAlgorithmModel.Agents.Count;
             var peopleHigherThanAverage =
-                _geneticAlgorithmModel.Agents.FindAll(agent => agent.GetScore() > averageScores);
+                _geneticAlgorithmModel.Agents.FindAll(agent => agent.GetScore() >= averageScores);
             var roundStat = new RoundStat
             {
                 appleEaten = _currentRoundStatModel.ApplesEaten,

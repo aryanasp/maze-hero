@@ -15,7 +15,7 @@ namespace Game
     public class GameStatModel
     {
         public readonly Dictionary<int, RoundStat> RoundsStat;
-        public Action<bool> OnGameFinish = (doReport) => { };
+        public Action OnGameFinish = () => { };
         
         public GameStatModel()
         {
@@ -27,9 +27,9 @@ namespace Game
             RoundsStat.Add(roundNumber, roundStat);
         }
 
-        public void FinishGame(bool doReport)
+        public void FinishGame()
         {
-            OnGameFinish.Invoke(doReport);
+            OnGameFinish.Invoke();
             ClearLastGameStat();
         }
         

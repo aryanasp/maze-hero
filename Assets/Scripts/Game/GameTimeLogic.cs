@@ -8,22 +8,14 @@ namespace Game
     {
         [Inject] private GameConfig _gameConfig;
         [Inject] private GameTimeModel _gameTimeModel;
-
-        private float _timePassedFromLastGameEpochUpdate;
+        [Inject] private GameStatModel _gameStatModel;
         
+        private float _timePassedFromLastGameEpochUpdate;
+
         private void FixedUpdate()
         {
-            if (CheckIfNeedEndSession())
-            {
-                EndSession();
-            }
             if (CheckGameIsPaused())
             {
-                return;
-            }
-            if (CheckIfGameFinished())
-            {
-                GoToMenuScene();
                 return;
             }
             if (ShouldNewRoundStart())
@@ -31,21 +23,16 @@ namespace Game
                 UpdateRound();
             }
             UpdateRoundTimePassed();
+            if (CheckIfGameFinished())
+            {
+                GoToMenuScene();
+                _gameStatModel.FinishGame();
+            }
         }
 
         private void GoToMenuScene()
         {
             SceneManager.LoadScene("Meta");
-        }
-
-        private void EndSession()
-        {
-            Application.Quit();
-        }
-
-        private bool CheckIfNeedEndSession()
-        {
-            return _gameTimeModel.CurrentRound > _gameConfig.roundCount;
         }
 
         private bool CheckGameIsPaused()
@@ -67,7 +54,7 @@ namespace Game
 
         private bool CheckIfGameFinished()
         {
-            return _gameTimeModel.CurrentRound >= _gameConfig.roundCount ;
+            return _gameTimeModel.CurrentRound >= _gameConfig.roundCount;
         }
 
         private void UpdateRoundTimePassed()

@@ -1,6 +1,6 @@
 ﻿namespace Ui.Menu.InputField.Type
 {
-    public class GameRoundDurationUi : BaseGameConfigIntInputField
+    public class GameRoundDurationInputFieldUi : BaseGameConfigIntInputField
     {
         protected override void AssignValue(int finalValue)
         {

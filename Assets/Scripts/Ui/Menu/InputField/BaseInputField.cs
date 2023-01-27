@@ -16,6 +16,14 @@ namespace Ui.Menu.InputField
             inputField.onSubmit.AddListener(OnInputChange);
         }
 
+        private void Update()
+        {
+            if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.KeypadEnter))
+            {
+                OnInputChange(inputField.text);
+            }
+        }
+
         protected abstract void Initialize();
 
         protected virtual void Start()

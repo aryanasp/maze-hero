@@ -12,8 +12,11 @@ namespace Ui.Menu.InputField
         
         protected virtual void OnEnable()
         {
+            Initialize();
             inputField.onSubmit.AddListener(OnInputChange);
         }
+
+        protected abstract void Initialize();
 
         protected virtual void Start()
         {

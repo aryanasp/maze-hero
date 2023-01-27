@@ -10,6 +10,11 @@ namespace Ui.Menu.InputField
             _geneticAlgorithmConfig.updateEpochTime = finalValue;
         }
 
+        protected override void Initialize()
+        {
+            inputField.text = _geneticAlgorithmConfig.updateEpochTime.ToString(CultureInfo.InvariantCulture);
+        }
+
         protected override string GetDescription()
         {
             return "Recalculate Path Epoch Time";

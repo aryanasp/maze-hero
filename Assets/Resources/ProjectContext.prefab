@@ -75,3 +75,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameConfig: {fileID: 11400000, guid: 259adc2d2ca88dd4ba4a3efc11bcf132, type: 2}
+  geneticAlgorithmConfig: {fileID: 11400000, guid: 22c301b93d3975a4cb74e41811f97454, type: 2}

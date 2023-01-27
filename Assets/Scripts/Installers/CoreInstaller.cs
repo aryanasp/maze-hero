@@ -12,7 +12,7 @@ namespace Installers
 {
     public class CoreInstaller : MonoInstaller
     {
-        private GeneticAlgorithmConfig _geneticAlgorithmConfig;
+        [Inject] private GeneticAlgorithmConfig _geneticAlgorithmConfig;
         [SerializeField] private MazeConfig mazeConfig;
         public override void InstallBindings()
         {
@@ -33,7 +33,6 @@ namespace Installers
 
         private void InstallCharacterFactory()
         {
-            _geneticAlgorithmConfig = Resources.Load<GeneticAlgorithmConfig>("Ai/GeneticAlgorithmConfig");
             switch (_geneticAlgorithmConfig.geneticAlgorithmType)
             {
                 case GeneticAlgorithmType.TimeAsState:

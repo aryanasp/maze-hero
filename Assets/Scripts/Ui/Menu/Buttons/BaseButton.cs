@@ -9,7 +9,6 @@ namespace Ui.Menu
     {
         [SerializeField] private int timesToClick = 1;
         [SerializeField] private float rememberTime = 2f;
-        [SerializeField] public UnityEvent onCall;
         
         private int _currentCountOfClick;
 
@@ -28,7 +27,6 @@ namespace Ui.Menu
         {
             if (_currentCountOfClick >= timesToClick)
             {
-                onCall?.Invoke();
                 OnClick();
             }
         }

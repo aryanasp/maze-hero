@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 namespace Ui.Menu
 {
@@ -6,6 +7,10 @@ namespace Ui.Menu
     {
         protected override void OnClick()
         {
+#if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+            return;
+#endif
             Application.Quit();
         }
     }

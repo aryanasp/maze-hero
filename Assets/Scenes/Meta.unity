@@ -1764,7 +1764,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: {fileID: 991306022}
   inputField: {fileID: 991306021}
-  defaultValue: 0
+  defaultValue: 0.1
   minRange: 0
   maxRange: 1
 --- !u!1 &1044100228
@@ -2006,7 +2006,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: {fileID: 1094846395}
   inputField: {fileID: 1094846394}
-  defaultValue: 0
+  defaultValue: 0.2
   minRange: 0
   maxRange: 1
 --- !u!1 &1101071761
@@ -3068,7 +3068,7 @@ MonoBehaviour:
   description: {fileID: 1786606713}
   inputField: {fileID: 1786606712}
   defaultValue: 40
-  minRange: 2
+  minRange: 4
   maxRange: 100
 --- !u!1 &1949289179
 GameObject:

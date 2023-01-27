@@ -36,5 +36,13 @@ namespace Game
                 OnMaxScoreChange.Invoke();
             }
         }
+
+        public void CheckForMaxScore(int maxScore)
+        {
+            if (maxScore > MaxScore)
+            {
+                MaxScore = maxScore;
+            }
+        }
     }
 }

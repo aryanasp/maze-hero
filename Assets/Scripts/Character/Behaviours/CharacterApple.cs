@@ -27,6 +27,7 @@ namespace Character
                 }
                 _scoreModel.Score += 1;
                 _currentRoundStatModel.ApplesEaten += 1;
+                _currentRoundStatModel.CheckForMaxScore(_scoreModel.Score);
                 com.Consume();
             }
         }

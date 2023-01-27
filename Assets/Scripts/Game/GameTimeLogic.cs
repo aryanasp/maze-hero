@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace Game
@@ -22,6 +23,7 @@ namespace Game
             }
             if (CheckIfGameFinished())
             {
+                GoToMenuScene();
                 return;
             }
             if (ShouldNewRoundStart())
@@ -29,6 +31,11 @@ namespace Game
                 UpdateRound();
             }
             UpdateRoundTimePassed();
+        }
+
+        private void GoToMenuScene()
+        {
+            SceneManager.LoadScene("Meta");
         }
 
         private void EndSession()

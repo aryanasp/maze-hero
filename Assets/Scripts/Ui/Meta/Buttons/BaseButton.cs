@@ -19,12 +19,17 @@ namespace Ui.Menu
 
         private IEnumerator ProcessClick()
         {
-            yield return new WaitForSeconds(rememberTime);
-            _currentCountOfClick = 0;
+            var timeToUpdate =  new WaitForSeconds(rememberTime);
+            while (true)
+            {
+                yield return timeToUpdate;
+                _currentCountOfClick = 0;
+            }
         }
 
         public void OnButtonClick()
         {
+            _currentCountOfClick++;
             if (_currentCountOfClick >= timesToClick)
             {
                 OnClick();

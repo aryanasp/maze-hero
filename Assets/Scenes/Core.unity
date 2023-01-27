@@ -319,7 +319,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &81163948
 MonoBehaviour:
@@ -333,7 +333,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8569fb3e97120de4186dc2c7641eddb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameConfig: {fileID: 11400000, guid: 259adc2d2ca88dd4ba4a3efc11bcf132, type: 2}
   mazeConfig: {fileID: 11400000, guid: b51bf70134fde844eb93bb3de6aae1e1, type: 2}
   geneticAlgorithmConfig: {fileID: 11400000, guid: 22c301b93d3975a4cb74e41811f97454, type: 2}
 --- !u!1 &82705930
@@ -1495,7 +1494,7 @@ RectTransform:
   - {fileID: 841981645}
   - {fileID: 836766873}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

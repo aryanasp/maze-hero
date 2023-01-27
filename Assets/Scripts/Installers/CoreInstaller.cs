@@ -12,8 +12,8 @@ namespace Installers
 {
     public class CoreInstaller : MonoInstaller
     {
+        private GeneticAlgorithmConfig _geneticAlgorithmConfig;
         [SerializeField] private MazeConfig mazeConfig;
-        [SerializeField] private GeneticAlgorithmConfig geneticAlgorithmConfig;
         public override void InstallBindings()
         {
             Container.Bind<GameTimeModel>()
@@ -24,8 +24,6 @@ namespace Installers
                 .AsSingle();
             Container.Bind<MapModel>()
                 .AsSingle();
-            Container.Bind<GeneticAlgorithmConfig>().FromInstance(geneticAlgorithmConfig)
-                .AsSingle();
             Container.Bind<AiGeneticAlgorithmModel>().AsSingle();
             Container.Bind<CurrentRoundStatModel>().AsSingle();
             Container.Bind<GameAnalyzerModel>().AsSingle();
@@ -35,7 +33,8 @@ namespace Installers
 
         private void InstallCharacterFactory()
         {
-            switch (geneticAlgorithmConfig.geneticAlgorithmType)
+            _geneticAlgorithmConfig = Resources.Load<GeneticAlgorithmConfig>("Ai/GeneticAlgorithmConfig");
+            switch (_geneticAlgorithmConfig.geneticAlgorithmType)
             {
                 case GeneticAlgorithmType.TimeAsState:
                     Container.BindFactory<GameObject, CharacterFactory>()

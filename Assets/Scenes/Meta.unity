@@ -833,7 +833,7 @@ MonoBehaviour:
   inputField: {fileID: 379701218}
   defaultValue: 60
   minRange: 10
-  maxRange: 600
+  maxRange: 10000
 --- !u!1 &433601649
 GameObject:
   m_ObjectHideFlags: 0

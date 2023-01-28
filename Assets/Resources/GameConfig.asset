@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   doReport: 1
-  roundDuration: 10
-  roundCount: 6
+  roundDuration: 60
+  roundCount: 60

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d265345ddd84100b08aec959361eb98, type: 3}
   m_Name: GeneticAlgorithmConfig
   m_EditorClassIdentifier: 
-  initialPopulation: 40
+  initialPopulation: 16
   initialHeuristic: 0
-  updateEpochTime: 0.03
+  updateEpochTime: 0.4
   geneticAlgorithmType: 0
   chanceToMutateNewPerson: 0.2
   geneMutationChance: 0.4
